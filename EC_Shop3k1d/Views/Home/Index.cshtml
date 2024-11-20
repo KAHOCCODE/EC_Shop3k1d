@@ -1,8 +1,35 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<EC_Shop3k1d.Data.ShopProduct>
+
+@{
+    ViewData["Title"] = "Our Products";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <h2>Our Products</h2>
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    @if (product.ShopProductImages != null && product.ShopProductImages.Any())
+                    {
+                        <img src="@product.ShopProductImages.FirstOrDefault()?.ImageUrl" class="card-img-top" alt="@product.ProductName Image">
+                    }
+                    else
+                    {
+                        <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top" alt="No image available">
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@product.ProductName</h5>
+                        <p class="card-text">Price: @product.Price.ToString("C")</p>
+                        <p class="card-text">Category: @product.Category?.CategoryName ?? "No category"</p>
+                        <p class="card-text">Supplier: @product.Supplier?.SupplierName ?? "No supplier"</p>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="@Url.Action("Details", "ShopProduct", new { id = product.Id })" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
